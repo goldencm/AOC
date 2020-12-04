@@ -6,12 +6,12 @@ import java.util.Scanner;
 public class part2 {
     public static void main(String args[]) throws FileNotFoundException {
         ArrayList<String> tobMap = loadBuffer();
-        // long totalTrees = treeCounter(tobMap, 1, 1);
-        // totalTrees *= treeCounter(tobMap, 3, 1);
-        // totalTrees *= treeCounter(tobMap, 5, 1);
-        // totalTrees *= treeCounter(tobMap, 7, 1);
-        // totalTrees *= treeCounter(tobMap, 1, 2);
-        // System.out.println(totalTrees);
+        long totalTrees = treeCounter(tobMap, 1, 1);
+        totalTrees *= treeCounter(tobMap, 3, 1);
+        totalTrees *= treeCounter(tobMap, 5, 1);
+        totalTrees *= treeCounter(tobMap, 7, 1);
+        totalTrees *= treeCounter(tobMap, 1, 2);
+        System.out.println(totalTrees);
         System.out.println(treeCounter(tobMap, 1, 1));
         System.out.println(treeCounter(tobMap, 3, 1));
         System.out.println(treeCounter(tobMap, 5, 1));
@@ -23,9 +23,11 @@ public class part2 {
 
     private static int treeCounter(ArrayList<String> tobMap, int right, int down) {
         int treeCount = 0;
+        int x = 0;
         for(int i = 0; i < tobMap.size(); i += down ) {
-            if ((tobMap.get(i)).charAt((i * right) % 31) == '#')
+            if ((tobMap.get(i)).charAt((x * right) % 31) == '#')
                 treeCount++;
+            x++;
         }
         return treeCount;
     }
