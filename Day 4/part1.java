@@ -3,51 +3,54 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 
 public class part1 {
     public static void main(String args[]) throws FileNotFoundException {
         ArrayList<String> data = loadBuffer();
-        ArrayList<String> buffer = new ArrayList<String>();
-        String temp;
         int totalPassports = 0;
         for (int i = 0; i < data.size(); i++) {
-            System.out.print(data.get(i));
-            temp = data.get(i);
-            if (temp.charAt(0) == '\n') {
-                System.out.print("calling");
-                totalPassports += formatBuffer(buffer);
-                buffer.clear();
+            totalPassports += passportChecker(data.get(i));
+        }
+        System.out.println(totalPassports);
+    }
+
+    private static int passportChecker(String buffer) {
+        String[] splitBuffer = buffer.split(" |\r\n");
+        String[] passportFields = {"byr", "iyr", "eyr", "hgt", "ecl", "pid", "hcl"};
+        boolean qualified = true;
+        for(int i = 0; i < passportFields.length; i++) {
+            if (qualified) {
+                qualified = false;
+                for(int x = 0; x < splitBuffer.length; x++) {
+                    // System.out.println("Checking: " + splitBuffer[x].substring(0, 3) + " =? " + passportFields[i]);
+                    if ((splitBuffer[x].substring(0, 3)).equals(passportFields[i])) {
+                        qualified = true;
+                        break;
+                    }
+                        
+                }
             } else {
-                buffer.add(temp);
+                break;
             }
+            
         }
-    }
-
-    private static int formatBuffer(ArrayList<String> buffer) {
-        ArrayList<String> temp = new ArrayList<String>();;
-        for(int i = 0; i < buffer.size(); i++) {
-            temp.addAll(Arrays.asList((buffer.get(i)).split(" ")));
+        if (qualified) {
+            System.out.print("\n");
+            for(int i = 0; i < splitBuffer.length; i++) {
+                System.out.print(splitBuffer[i].substring(0, 3) + " ");
+            }
+            System.out.print("\n");
         }
-        for(int i = 0; i < buffer.size(); i++) {
-            System.out.println(buffer.get(i));
-        }
-        return passportChecker(temp);
-    }
-
-    private static int passportChecker(ArrayList<String> buffer) {
-        for(int i = 0; i < buffer.size(); i++) {
-            System.out.print(buffer.get(i));
-        }
-        
-        
-        return 0;
+            
+        return qualified? 1 : 0;
     }
 
     private static ArrayList<String> loadBuffer() throws FileNotFoundException {
         File file = new File(System.getProperty("user.dir") + "\\" + "data.txt"); 
         Scanner sc = new Scanner(file); 
-        sc.useDelimiter("[;\r]+");
+        sc.useDelimiter("\r\n\r\n");
         ArrayList<String> tempList = new ArrayList<String>();
         while (sc.hasNextLine()) {
             tempList.add(sc.next());
