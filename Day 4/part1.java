@@ -24,26 +24,15 @@ public class part1 {
             if (qualified) {
                 qualified = false;
                 for(int x = 0; x < splitBuffer.length; x++) {
-                    // System.out.println("Checking: " + splitBuffer[x].substring(0, 3) + " =? " + passportFields[i]);
                     if ((splitBuffer[x].substring(0, 3)).equals(passportFields[i])) {
                         qualified = true;
                         break;
-                    }
-                        
+                    }   
                 }
             } else {
                 break;
             }
-            
-        }
-        if (qualified) {
-            System.out.print("\n");
-            for(int i = 0; i < splitBuffer.length; i++) {
-                System.out.print(splitBuffer[i].substring(0, 3) + " ");
-            }
-            System.out.print("\n");
-        }
-            
+        }   
         return qualified? 1 : 0;
     }
 
